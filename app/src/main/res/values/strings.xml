@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">dzChumanov04</string>
+    <string name="app_name" translatable="false">Greeting App</string>
+    <string name="hello">Hello!</string>
+    <string name="tip">click the text above</string>
 </resources>

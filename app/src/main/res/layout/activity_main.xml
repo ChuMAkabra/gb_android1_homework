@@ -7,12 +7,25 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/text_hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:longClickable="true"
+        android:onClick="helloOnClick"
+        android:text="@string/hello"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_hello"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
