@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Greeting App</string>
+    <string name="app_name" translatable="false">WeathApp</string>
     <string name="hello">Hello!</string>
     <string name="tip">click the text above</string>
     <string name="go_button">Weather</string>
