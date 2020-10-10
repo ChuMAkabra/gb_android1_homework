@@ -6,4 +6,5 @@
     <string name="city1_btn">Москва</string>
     <string name="city2_btn">Лос-Анджелес</string>
     <string name="city3_btn">Верона</string>
+    <string name="btnPrev">Назад</string>
 </resources>
