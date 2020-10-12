@@ -7,12 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setClassName(MainActivity.class.toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -26,17 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/**
- * При нажатии устанавливает размер текста в 40dp и меняет текст.
- * При смене языка в настройках, текст и его размер сбросятся до дефолтных.
- * При смене размера шрифта в настройках, текст меняет дефолтный размер
-*/
- public void helloOnClick(View view) {
+    /**
+     * При нажатии устанавливает размер текста в 40dp и меняет текст.
+     * При смене языка в настройках, текст и его размер сбросятся до дефолтных.
+     * При смене размера шрифта в настройках, текст меняет дефолтный размер
+     */
+    public void helloOnClick(View view) {
         TextView textHello = findViewById(R.id.text_hello);
         textHello.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
         if (textHello.getText().toString().equals("Hello!"))
             textHello.setText("Привет!");
-        else
-            textHello.setText("Hello!");
+        else textHello.setText("Hello!");
     }
 }

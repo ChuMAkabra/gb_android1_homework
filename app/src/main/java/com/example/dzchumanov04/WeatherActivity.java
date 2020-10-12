@@ -1,6 +1,5 @@
 package com.example.dzchumanov04;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +9,13 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends AbstractActivity{
 
     private static Map<String, String> cityWeather = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setClassName(WeatherActivity.class.toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
