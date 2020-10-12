@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -36,8 +37,14 @@ public class WeatherActivity extends AppCompatActivity {
 
     private View.OnClickListener listener = v -> {
         Button button = findViewById(v.getId());
+        TextView tvTemp = findViewById(R.id.txtTemp);
+
         String cityText = button.getText().toString();
-        String toastText = String.format("%s: %s", cityText,  cityWeather.get(cityText));
+        String temperature = cityWeather.get(cityText) + "°C";
+
+        tvTemp.setText(temperature);
+
+        String toastText = String.format("%s: %s", cityText, temperature);
         Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
     };
 }

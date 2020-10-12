@@ -2,9 +2,10 @@
     <string name="app_name" translatable="false">WeathApp</string>
     <string name="hello">Hello!</string>
     <string name="tip">click the text above</string>
-    <string name="go_button">Weather</string>
+    <string name="go_btn">Weather</string>
     <string name="city1_btn">Moscow</string>
     <string name="city2_btn">Los Angeles</string>
     <string name="city3_btn">Verona</string>
-    <string name="btnPrev">Back</string>
+    <string name="back_btn">Back</string>
+    <string name="temperature" translatable="false"/>
 </resources>
