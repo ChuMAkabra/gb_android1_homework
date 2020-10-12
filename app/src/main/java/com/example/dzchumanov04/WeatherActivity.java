@@ -1,6 +1,7 @@
 package com.example.dzchumanov04;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class WeatherActivity extends AbstractActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        tvTemp = findViewById(R.id.txtTemp);
+//        tvTemp = findViewById(R.id.txtTemp);
         btnCity1 = findViewById(R.id.btnCity1);
         btnCity2 = findViewById(R.id.btnCity2);
         btnCity3 = findViewById(R.id.btnCity3);
@@ -40,8 +41,19 @@ public class WeatherActivity extends AbstractActivity{
         btnCity2.setOnClickListener(listener);
         btnCity3.setOnClickListener(listener);
 
+        if (tvTemp == null) {
+            tvTemp = findViewById(R.id.txtTemp);
+            tvTemp.setText(presenter.getTemperature());
+            presenter.setTvTemp(tvTemp);
+        }
+        else {
+            tvTemp = presenter.getTvTemp();
+        }
+
         btnBack.setOnClickListener(v -> finish());
-        tvTemp.setText(presenter.getTemperature());
+
+        Log.d("TEST", String.format("but again it's %f", presenter.getTvTemp().getTextSize()));
+        Log.d("TEST", String.format("but again it's %f", presenter.getTvTemp().getTextSize()));
     }
 
     private View.OnClickListener listener = v -> {
@@ -55,5 +67,14 @@ public class WeatherActivity extends AbstractActivity{
                 presenter.getTemperature());
         Toast.makeText(getApplicationContext(), toastText,
                 Toast.LENGTH_SHORT).show();
+        Log.d("TEST", String.format("now it's %f", tvTemp.getTextSize()));
+        tvTemp.setTextSize(200);
+        presenter.setTvTemp(tvTemp);
     };
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        Log.d("TEST", String.format("%f", presenter.getTvTemp().getTextSize()));
+    }
 }
