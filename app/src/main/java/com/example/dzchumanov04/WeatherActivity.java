@@ -3,13 +3,14 @@ package com.example.dzchumanov04;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class WeatherActivity extends AbstractActivity{
+public class WeatherActivity extends AbstractActivity {
 
     private static Map<String, String> cityWeather = new HashMap<>();
 
@@ -33,6 +34,10 @@ public class WeatherActivity extends AbstractActivity{
 
         Button btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
+
+        EditText etTest = findViewById(R.id.etTest);
+//        etTest.setText("0");
+
     }
 
     private View.OnClickListener listener = v -> {
@@ -46,5 +51,7 @@ public class WeatherActivity extends AbstractActivity{
 
         String toastText = String.format("%s: %s", cityText, temperature);
         Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
+
+        button.requestFocus();
     };
 }
