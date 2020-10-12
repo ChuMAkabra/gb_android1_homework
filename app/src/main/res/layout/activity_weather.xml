@@ -55,7 +55,7 @@
         android:id="@+id/txtTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/temperature"
+        android:text=""
         android:textSize="72sp"
         app:layout_constraintBottom_toTopOf="@id/btnCity2"
         app:layout_constraintEnd_toEndOf="parent"

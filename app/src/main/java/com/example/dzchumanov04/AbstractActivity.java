@@ -12,19 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * Наследуя его, можно избежать:
  * 1) однообразоного переопределения всех интересующих нас методов;
  * 2) ручного указания названия активити в первом аргументе Log.d().
- *
- * Для корректной работы в классе активити достаточно переопределить onCreate():
- * 1) передать в setClassName() имя активити в строковом формате;
- * 2) вызвать super.onCreate().
  */
 
 public abstract class AbstractActivity extends AppCompatActivity {
-    protected String className;
-
-    // позволяет получить имя активити (в строковом формате) для логирования
-    public void setClassName(String className) {
-        this.className = className;
-    }
+    protected String className = this.getClass().getName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

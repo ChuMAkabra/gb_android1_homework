@@ -11,7 +11,6 @@ public class MainActivity extends AbstractActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setClassName(MainActivity.class.toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -19,7 +18,8 @@ public class MainActivity extends AbstractActivity {
         btnWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), WeatherActivity.class));
+                startActivity(new Intent(getApplicationContext(),
+                        WeatherActivity.class));
             }
         });
 

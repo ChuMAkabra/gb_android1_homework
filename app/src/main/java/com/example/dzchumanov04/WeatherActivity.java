@@ -11,40 +11,48 @@ import java.util.Map;
 
 public class WeatherActivity extends AbstractActivity{
 
-    private static Map<String, String> cityWeather = new HashMap<>();
+    private static Map<String, Integer> cityWeather = new HashMap<>();
+    private final WeatherPresenter presenter = WeatherPresenter.getInstance();
+
+    private TextView tvTemp;
+    private Button btnCity1;
+    private Button btnCity2;
+    private Button btnCity3;
+    private Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setClassName(WeatherActivity.class.toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        Button btnCity1 = findViewById(R.id.btnCity1);
-        Button btnCity2 = findViewById(R.id.btnCity2);
-        Button btnCity3 = findViewById(R.id.btnCity3);
+        tvTemp = findViewById(R.id.txtTemp);
+        btnCity1 = findViewById(R.id.btnCity1);
+        btnCity2 = findViewById(R.id.btnCity2);
+        btnCity3 = findViewById(R.id.btnCity3);
+        btnBack = findViewById(R.id.btnBack);
 
-        cityWeather.put(btnCity1.getText().toString(), "+14");
-        cityWeather.put(btnCity2.getText().toString(), "+30");
-        cityWeather.put(btnCity3.getText().toString(), "+20");
+        cityWeather.put(btnCity1.getText().toString(), -14);
+        cityWeather.put(btnCity2.getText().toString(), 30);
+        cityWeather.put(btnCity3.getText().toString(), 20);
 
         btnCity1.setOnClickListener(listener);
         btnCity2.setOnClickListener(listener);
         btnCity3.setOnClickListener(listener);
 
-        Button btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
+        tvTemp.setText(presenter.getTemperature());
     }
 
     private View.OnClickListener listener = v -> {
         Button button = findViewById(v.getId());
-        TextView tvTemp = findViewById(R.id.txtTemp);
 
         String cityText = button.getText().toString();
-        String temperature = cityWeather.get(cityText) + "°C";
+        presenter.setTemperature(cityWeather.get(cityText));
+        tvTemp.setText(presenter.getTemperature());
 
-        tvTemp.setText(temperature);
-
-        String toastText = String.format("%s: %s", cityText, temperature);
-        Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
+        String toastText = String.format("%s: %s", cityText,
+                presenter.getTemperature());
+        Toast.makeText(getApplicationContext(), toastText,
+                Toast.LENGTH_SHORT).show();
     };
 }
