@@ -12,7 +12,8 @@ import java.util.Map;
 public class WeatherActivity extends AbstractActivity{
 
     private static Map<String, Integer> cityWeather = new HashMap<>();
-    private final WeatherPresenter presenter = WeatherPresenter.getInstance();
+    private static final WeatherPresenter presenter =
+            WeatherPresenter.getInstance();
 
     private TextView tvTemp;
     private Button btnCity1;
