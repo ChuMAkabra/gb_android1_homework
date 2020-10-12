@@ -37,6 +37,7 @@ public class WeatherActivity extends AbstractActivity {
 
         EditText etTest = findViewById(R.id.etTest);
 //        etTest.setText("0");
+//        etTest.setEnabled(false);
 
     }
 
@@ -53,5 +54,9 @@ public class WeatherActivity extends AbstractActivity {
         Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
 
         button.requestFocus();
+
+        EditText etTest = findViewById(R.id.etTest);
+        etTest.setTextSize(100);
+        etTest.setEnabled(false);
     };
 }
