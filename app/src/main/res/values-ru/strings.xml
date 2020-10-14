@@ -2,9 +2,9 @@
 <resources>
     <string name="hello">Привет!</string>
     <string name="tip">нажмите на текст выше</string>
-    <string name="go_button">Погода</string>
+    <string name="go_btn">Погода</string>
     <string name="city1_btn">Москва</string>
     <string name="city2_btn">Лос-Анджелес</string>
     <string name="city3_btn">Верона</string>
-    <string name="btnPrev">Назад</string>
+    <string name="back_btn">Назад</string>
 </resources>
