@@ -7,17 +7,6 @@
     tools:context=".WeatherActivity">
 
     <Button
-        android:id="@+id/btnCity2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/city2_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnCity3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCity1"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/btnCity1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +15,20 @@
         app:layout_constraintEnd_toStartOf="@+id/btnCity2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.584" />
+
+    <Button
+        android:id="@+id/btnCity2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/city2_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCity3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnCity1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.584" />
 
     <Button
         android:id="@+id/btnCity3"
@@ -37,7 +39,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCity2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.584" />
 
     <Button
         android:id="@+id/btnBack"
@@ -59,9 +62,23 @@
         android:textSize="72sp"
         app:layout_constraintBottom_toTopOf="@id/btnCity2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <TextView
+        android:id="@+id/txt_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/details"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btnCity2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTemp"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
