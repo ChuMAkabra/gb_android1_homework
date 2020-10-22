@@ -22,6 +22,7 @@ public class WeatherActivity extends AbstractActivity {
     private Button btnCity3;
     private Button btnBack;
     private TextView tvDetails;
+    private Parcel parcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,11 @@ public class WeatherActivity extends AbstractActivity {
         btnBack = findViewById(R.id.btnBack);
         tvDetails = findViewById(R.id.txt_details);
 
+        /**
+         * Пока не знаю, как лучше вынести код с HashMap'ами в презентер.
+         * Но наверное проще будет, когда я заменю кнопки RecycleView, а HashMap
+         * базой данных или на крайняк arrays.xml
+         */
         cityTemperature.put(btnCity1.getText().toString(), -14);
         cityTemperature.put(btnCity2.getText().toString(), 30);
         cityTemperature.put(btnCity3.getText().toString(), 20);
@@ -43,11 +49,15 @@ public class WeatherActivity extends AbstractActivity {
         cityName.put(btnCity2.getText().toString(), "los-angeles");
         cityName.put(btnCity3.getText().toString(), "verona");
 
+        /**
+         * Можно ли как-то пройтись итератором по всем кнопкам?
+         * Например записать все Views типа Button в обин массив View?
+         */
         btnCity1.setOnClickListener(btnListener);
         btnCity2.setOnClickListener(btnListener);
         btnCity3.setOnClickListener(btnListener);
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         tvTemp.setText(presenter.getTemperature());
 
@@ -67,16 +77,29 @@ public class WeatherActivity extends AbstractActivity {
         tvTemp.setText(presenter.getTemperature());
 
         // сформировать ссылку на подробный прогноз в презентере и прикрепить
-        presenter.setDetailsLink(cityName.get(cityText));
+        presenter.generateLink(cityName.get(cityText));
         tvDetails.setVisibility(View.VISIBLE);
 
         // сформировать текст тоста и отобразить его
         String toastText = String.format("%s: %s", cityText, presenter.getTemperature());
         Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
+
+        parcel = new Parcel(presenter.getTemperature(), button.getText().toString());
+
     };
 
     private View.OnClickListener tvListener = v-> {
-        Intent intent = new Intent(Intent.ACTION_VIEW, presenter.getDetailsLink());
+        Intent intent = new Intent(Intent.ACTION_VIEW, presenter.getLink());
         startActivity(intent);
     };
+
+    @Override
+    public void onBackPressed() {
+        if (parcel != null) {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.PARCEL, parcel);
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
+    }
 }

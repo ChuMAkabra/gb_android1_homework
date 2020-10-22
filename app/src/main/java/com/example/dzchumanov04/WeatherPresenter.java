@@ -4,29 +4,27 @@ import android.net.Uri;
 
 final class WeatherPresenter {
     private static WeatherPresenter instance = new WeatherPresenter();
-
     private String temperature;
-    private Uri detailsLink;
-
-
-    public void setDetailsLink(String city) {
-        this.detailsLink = Uri.parse("https://yandex.ru/pogoda/" + city);
-    }
-
-    public Uri getDetailsLink() {
-        return detailsLink;
-    }
+    private Uri link;
 
     private WeatherPresenter() {
         temperature = "";
     }
 
-    String getTemperature() {
-        return temperature;
+    void generateLink(String city) {
+        link = Uri.parse("https://yandex.ru/pogoda/" + city);
     }
 
-    void setTemperature(Integer temp) {
-        this.temperature = temp + "°C";
+    Uri getLink() {
+        return link;
+    }
+
+    void setTemperature(Integer temperature) {
+        this.temperature = temperature + "°C";
+    }
+
+    String getTemperature() {
+        return temperature;
     }
 
 
