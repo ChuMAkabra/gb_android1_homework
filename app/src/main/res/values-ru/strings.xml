@@ -7,4 +7,5 @@
     <string name="city2_btn">Лос-Анджелес</string>
     <string name="city3_btn">Верона</string>
     <string name="back_btn">Назад</string>
+    <string name="details">Подробнее</string>
 </resources>
