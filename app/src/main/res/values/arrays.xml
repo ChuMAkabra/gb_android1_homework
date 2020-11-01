@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="cities_names">
+        <item>@string/city1_vh</item>
+        <item>@string/city2_vh</item>
+        <item>@string/city3_vh</item>
+        <item>@string/city4_vh</item>
+    </array>
+
+    <array name="cities_pictures">
+        <item>@drawable/moscow</item>
+        <item>@drawable/paris</item>
+        <item>@drawable/barcelona</item>
+        <item>@drawable/new_york</item>
+    </array>
+</resources>
