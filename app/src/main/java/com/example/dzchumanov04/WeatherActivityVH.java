@@ -2,8 +2,11 @@ package com.example.dzchumanov04;
 
 import android.os.Bundle;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Objects;
 
 public class WeatherActivityVH extends AbstractActivity {
 
@@ -33,8 +36,11 @@ public class WeatherActivityVH extends AbstractActivity {
         // добавляем менеджер
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-
-        // TODO дописать
+        // добавляем декоратор
+        DividerItemDecoration decorator = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+        decorator.setDrawable(Objects.requireNonNull(getDrawable(R.drawable.separator)));
+        recyclerView.addItemDecoration(decorator);
+        //добавляем адаптер
         CityAdapter adapter = new CityAdapter(sourceChangeableData);
         recyclerView.setAdapter(adapter);
         return adapter;
