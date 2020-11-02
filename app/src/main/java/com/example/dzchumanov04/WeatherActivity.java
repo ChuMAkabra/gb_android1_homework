@@ -34,7 +34,7 @@ public class WeatherActivity extends AbstractActivity {
         btnCity2 = findViewById(R.id.btnCity2);
         btnCity3 = findViewById(R.id.btnCity3);
         btnBack = findViewById(R.id.btnBack);
-        tvDetails = findViewById(R.id.txt_details);
+        tvDetails = findViewById(R.id.tv_details);
 
         /**
          * Пока не знаю, как лучше вынести код с HashMap'ами в презентер.
