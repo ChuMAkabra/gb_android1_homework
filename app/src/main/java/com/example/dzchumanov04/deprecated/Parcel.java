@@ -1,4 +1,4 @@
-package com.example.dzchumanov04;
+package com.example.dzchumanov04.deprecated;
 
 import java.io.Serializable;
 

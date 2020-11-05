@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,12 +42,13 @@ public class FragmentWeather extends Fragment {
         ConstraintLayout constraintLayout = (ConstraintLayout) view;
         RecyclerView rvForecast = constraintLayout.findViewById(R.id.rvForecast);
         TextView temp = constraintLayout.findViewById(R.id.tvTemp);
+        ImageView sky = constraintLayout.findViewById(R.id.ivIcon);
         TextView details = constraintLayout.findViewById(R.id.tvDetails);
         TextView name = constraintLayout.findViewById(R.id.tvCity);
 
         City curCity = getCurrentCity();
         if (curCity != null) {
-            temp.setText(String.format("%s°C", curCity.getTemp()));
+            temp.setText(curCity.getCurTemp().getTemp());
             details.setVisibility(View.VISIBLE);
 
             details.setOnClickListener(v -> {
@@ -54,21 +56,15 @@ public class FragmentWeather extends Fragment {
                 startActivity(intent);
             });
             name.setText(curCity.getName());
+            int icon = curCity.getCurTemp().getIcon();
+            sky.setImageResource(icon);
         }
-
-/**
- * Тестовая версия горизонтального RecyclerView
- */
-        CityDataSource dataSource = new CitySourceBuilder()
-                .setResources(getResources())
-                .build();
-        CityChangeableSource data = new CityChangeableSource(dataSource);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvForecast.setLayoutManager(layoutManager);
 
-        AdapterCity adapterCity = new AdapterCity(data);
-        rvForecast.setAdapter(adapterCity);
+        AdapterWeather adapterWeather = new AdapterWeather(curCity);
+        rvForecast.setAdapter(adapterWeather);
     }
 
     @Override

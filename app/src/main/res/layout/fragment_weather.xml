@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WeatherActivity">
+    tools:context="com.example.dzchumanov04.deprecated.WeatherActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/flUpperFrame"
@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/rvForecast"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="0.6">
@@ -22,10 +23,13 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivIcon"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivIcon"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivIcon"
+            app:layout_constraintVertical_bias="0.24000001"
             tools:text="0°C" />
 
         <TextView
@@ -39,6 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCity"
+            app:layout_constraintVertical_bias="0.26"
             tools:text="Details" />
 
         <TextView
@@ -53,6 +58,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             app:layout_constraintVertical_bias="0.26999998"
             tools:text="City" />
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="124dp"
+            android:layout_height="111dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvCity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvTemp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/w10d_rain" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

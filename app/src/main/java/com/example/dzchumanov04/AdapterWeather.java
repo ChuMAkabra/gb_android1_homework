@@ -13,15 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHolder> {
-    List<String> temps;
+    List<TempStamp> temps;
 
     public AdapterWeather (City city) {
-        temps = new ArrayList<>();
-        temps.add(city.getTemp2hBefore());
-        temps.add(city.getTemp1hBefore());
-        temps.add(city.getTemp());
-        temps.add(city.getTemp1hAfter());
-        temps.add(city.getTemp2hAfter());
+        temps = city.getTemps();
     }
     @NonNull
     @Override
@@ -34,7 +29,8 @@ public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        TempStamp temp = temps.get(position);
+        holder.setData(temp.getTime(), temp.getIcon(), temp.getTemp());
     }
 
     @Override
@@ -53,10 +49,10 @@ public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHold
             this.ivSky = itemView.findViewById(R.id.ivSky);
             this.tvTemp = itemView.findViewById(R.id.tvTemp);
         }
-        public void setData(String ... args) {
-            tvTime.setText(args[1]);
-            tvTime.setText(args[2]);
-            tvTime.setText(args[3]);
+        public void setData(String time, int icon, String temp) {
+            tvTime.setText(time);
+            ivSky.setImageResource(icon);
+            tvTemp.setText(temp);
 
         }
     }

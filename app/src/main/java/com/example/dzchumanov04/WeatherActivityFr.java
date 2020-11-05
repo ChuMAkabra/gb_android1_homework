@@ -21,7 +21,7 @@ public class WeatherActivityFr extends AbstractActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frCity, new FragmentCity())
-                    .replace(R.id.frWeather, new FragmentWeather())
+//                    .replace(R.id.frWeather, new FragmentWeather())
                     .commit();
         }
     }
