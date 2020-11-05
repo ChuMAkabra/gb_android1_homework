@@ -24,10 +24,10 @@ public class WeatherActivityVH extends AbstractActivity {
         // Декорируем источник данных, теперь он изменяем (можно добавлять/удалять элементы)
         final CityChangeableSource sourceChangeableData = new CityChangeableSource(sourceData);
         // Создаем RecyclerView и возвращаем его адаптер
-        final CityAdapter adapter = initRecyclerView(sourceChangeableData);
+        final AdapterCity adapter = initRecyclerView(sourceChangeableData);
     }
 
-    private CityAdapter initRecyclerView(CityChangeableSource sourceChangeableData) {
+    private AdapterCity initRecyclerView(CityChangeableSource sourceChangeableData) {
         // получаем RV
         RecyclerView recyclerView = findViewById(R.id.rvCity);
         // Эта установка служит для повышения производительности системы
@@ -41,7 +41,7 @@ public class WeatherActivityVH extends AbstractActivity {
         decorator.setDrawable(Objects.requireNonNull(getDrawable(R.drawable.separator)));
         recyclerView.addItemDecoration(decorator);
         //добавляем адаптер
-        CityAdapter adapter = new CityAdapter(sourceChangeableData);
+        AdapterCity adapter = new AdapterCity(sourceChangeableData);
         recyclerView.setAdapter(adapter);
         return adapter;
     }

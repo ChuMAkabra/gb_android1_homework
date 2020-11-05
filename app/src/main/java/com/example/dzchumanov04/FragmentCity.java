@@ -1,6 +1,7 @@
 package com.example.dzchumanov04;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,10 +42,10 @@ public class FragmentCity extends Fragment {
         // Декорируем источник данных, теперь он изменяем (можно добавлять/удалять элементы)
         final CityChangeableSource sourceChangeableData = new CityChangeableSource(sourceData);
         // Создаем RecyclerView и возвращаем его адаптер
-        final CityAdapter adapter = initRecyclerView(sourceChangeableData);
+        final AdapterCity adapter = initRecyclerView(sourceChangeableData);
     }
 
-    private CityAdapter initRecyclerView(CityChangeableSource sourceChangeableData) {
+    private AdapterCity initRecyclerView(CityChangeableSource sourceChangeableData) {
         // получаем RV
         // Эта установка служит для повышения производительности системы
         // (все элементы будут иметь одинаковый размер, и не надо его пересчитывать)
@@ -57,7 +58,31 @@ public class FragmentCity extends Fragment {
         decorator.setDrawable(Objects.requireNonNull(application.getDrawable(R.drawable.separator)));
         recyclerView.addItemDecoration(decorator);
         //добавляем адаптер
-        CityAdapter adapter = new CityAdapter(sourceChangeableData);
+        AdapterCity adapter = new AdapterCity(sourceChangeableData);
+
+        /**
+         *  Я верно понимаю, что такой подход нужен именно для того, чтобы не
+         *  передавать ссылки на фрагмент менеджер и ресурсы в класс фрагмента?
+         */
+        // передаем фрагменту обработчик нажатий на элемент RV
+        adapter.setOnItemClickListener(new AdapterCity.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frContainer, FragmentWeather.create (sourceChangeableData.getCity(position)))
+                            .addToBackStack(null).commit();
+                }
+                else {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frWeather, FragmentWeather.create(sourceChangeableData.getCity(position)))
+                            .commit();
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
         return adapter;
     }

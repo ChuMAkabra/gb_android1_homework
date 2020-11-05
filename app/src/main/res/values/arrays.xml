@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="cities_names">
+    <array name="cities">
         <item>@string/city1_vh</item>
         <item>@string/city2_vh</item>
         <item>@string/city3_vh</item>
         <item>@string/city4_vh</item>
     </array>
 
-    <array name="cities_pictures">
+    <array name="pictures">
         <item>@drawable/moscow</item>
         <item>@drawable/paris</item>
         <item>@drawable/barcelona</item>
         <item>@drawable/new_york</item>
     </array>
+
+    <string-array name="links">
+        <item>https://yandex.ru/pogoda/moscow</item>
+        <item>https://yandex.ru/pogoda/paris</item>
+        <item>https://yandex.ru/pogoda/barcelona</item>
+        <item>https://yandex.ru/pogoda/new-york</item>
+    </string-array>
+
+    <integer-array name="time_diff">
+        <item>3</item>
+        <item>1</item>
+        <item>1</item>
+        <item>-5</item>
+    </integer-array>
+
+    <string-array name="temp_2before">
+        <item>+6</item>
+        <item>+9</item>
+        <item>+15</item>
+        <item>+8</item>
+    </string-array>
+
+    <string-array name="temp_1before">
+        <item>+7</item>
+        <item>+10</item>
+        <item>+16</item>
+        <item>+9</item>
+    </string-array>
+
+    <string-array name="temp">
+        <item>+8</item>
+        <item>+11</item>
+        <item>+17</item>
+        <item>+10</item>
+    </string-array>
+    
+    <string-array name="temp_1after">
+        <item>+9</item>
+        <item>+12</item>
+        <item>+18</item>
+        <item>+11</item>
+    </string-array>
+
+    <string-array name="temp_2after">
+        <item>+10</item>
+        <item>+13</item>
+        <item>+19</item>
+        <item>+12</item>
+    </string-array>
 </resources>

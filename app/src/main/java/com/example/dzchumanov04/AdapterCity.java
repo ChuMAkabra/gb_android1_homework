@@ -5,26 +5,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+public class AdapterCity extends RecyclerView.Adapter<AdapterCity.ViewHolder> {
     private CityDataSource dataSource;
+    private OnItemClickListener itemClickListener;
+//    private Context appContext;
 
     // Передаем в конструктор источник данных
     // В нашем случае это класс CityDataSource, но может быть и запросом к БД
-    CityAdapter(CityDataSource dataSource) {
+    AdapterCity(CityDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    // интерфейс обработки нажатия на элемент списка RV
+    interface OnItemClickListener
+    {
+        // метод также содержит порядковый номер элемента в списке
+        void onItemClick(View v, int position);
     }
 
     // Создать новый элемент пользовательского интерфейса
     // Запускается менеджером
     @NonNull
     @Override
-    public CityAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterCity.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+
+//        appContext = parent.getContext().getApplicationContext();
 
         //TODO: добавить клик-листенер
 
@@ -62,6 +76,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
             super(itemView);
             imageView = itemView.findViewById(R.id.cityImage);
             textView = itemView.findViewById(R.id.cityItem);
+
+            if (itemClickListener != null) imageView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                itemClickListener.onItemClick(v, position);
+            });
         }
 
         void setData(int cityImage, int cityName) {

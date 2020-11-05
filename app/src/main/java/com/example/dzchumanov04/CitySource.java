@@ -16,13 +16,19 @@ class CitySource implements CityDataSource {
     }
 
     CitySource init(){
-        // строки описаний из ресурсов
-        int[] names = getArray(R.array.cities_names);
-        // изображения
-        int[] images = getArray(R.array.cities_pictures);
+        int[] names = getArray(R.array.cities); // строки описаний из ресурсов
+        int[] images = getArray(R.array.pictures); // изображения
+        String[] links = resources.getStringArray(R.array.links); // ссылка на yandex.ru/pogoda
+        int[] gmtDiff = resources.getIntArray(R.array.time_diff); // разница во времени с GMT
+        String[] temp2hBefore = resources.getStringArray(R.array.temp_2before);    // температура 2 часа назад
+        String[] temp1hBefore = resources.getStringArray(R.array.temp_1before);    // температура 1 час  назад
+        String[] temp = resources.getStringArray(R.array.temp);   // температура сейчас
+        String[] temp1hAfter = resources.getStringArray(R.array.temp_1after);     // температура через 1 час
+        String[] temp2hAfter = resources.getStringArray(R.array.temp_2after);     // температура через 2 часа
         // заполнение источника данных
         for (int i = 0; i < names.length; i++) {
-            dataSource.add(new City(names[i], images[i]));
+            dataSource.add(new City(names[i], images[i], links[i], gmtDiff[i],
+                    temp2hBefore[i], temp1hBefore[i], temp[i], temp1hAfter[i], temp2hAfter[i]));
         }
         return this;
     }

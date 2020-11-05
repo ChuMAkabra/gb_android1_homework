@@ -29,12 +29,12 @@ public class WeatherActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        tvTemp = findViewById(R.id.txtTemp);
+        tvTemp = findViewById(R.id.tvTemp);
         btnCity1 = findViewById(R.id.btnCity1);
         btnCity2 = findViewById(R.id.btnCity2);
         btnCity3 = findViewById(R.id.btnCity3);
         btnBack = findViewById(R.id.btnBack);
-        tvDetails = findViewById(R.id.tv_details);
+        tvDetails = findViewById(R.id.tvDetails);
 
         /**
          * Пока не знаю, как лучше вынести код с HashMap'ами в презентер.
