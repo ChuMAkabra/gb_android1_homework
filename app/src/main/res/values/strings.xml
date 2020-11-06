@@ -13,4 +13,6 @@
     <string name="city4_vh">New York</string>
     <string name="back_btn">Back</string>
     <string name="details">Details</string>
+    <string name="city_image">City photo</string>
+    <string name="weather_icon">Weather icon</string>
 </resources>

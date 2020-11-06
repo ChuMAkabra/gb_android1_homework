@@ -57,6 +57,7 @@ public class FragmentCity extends Fragment {
         DividerItemDecoration decorator = new DividerItemDecoration(fragment, LinearLayoutManager.VERTICAL);
         decorator.setDrawable(Objects.requireNonNull(application.getDrawable(R.drawable.separator)));
         recyclerView.addItemDecoration(decorator);
+
         //добавляем адаптер
         AdapterCity adapter = new AdapterCity(sourceChangeableData);
 
@@ -68,7 +69,10 @@ public class FragmentCity extends Fragment {
         adapter.setOnItemClickListener(new AdapterCity.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
+                /**
+                 * действительно ли надо проверять не равен ли getFragmentManager() null?
+                 * И как это лучше делать?
+                  */
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     getFragmentManager()
                             .beginTransaction()

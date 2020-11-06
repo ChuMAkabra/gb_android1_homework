@@ -19,7 +19,7 @@ public class AdapterCity extends RecyclerView.Adapter<AdapterCity.ViewHolder> {
         this.dataSource = dataSource;
     }
 
-    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+    void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
@@ -36,13 +36,12 @@ public class AdapterCity extends RecyclerView.Adapter<AdapterCity.ViewHolder> {
     @Override
     public AdapterCity.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
 
-//        appContext = parent.getContext().getApplicationContext();
+        /** лучше здесь устанавливать клик-листенеры, или нормально это делать в
+         * конструкторе класса ViewHolder, как это сделано сейчас у меня?
+         */
 
-        //TODO: добавить клик-листенер
-
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -77,11 +76,16 @@ public class AdapterCity extends RecyclerView.Adapter<AdapterCity.ViewHolder> {
             imageView = itemView.findViewById(R.id.cityImage);
             textView = itemView.findViewById(R.id.cityItem);
 
-            if (itemClickListener != null) imageView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                itemClickListener.onItemClick(v, position);
-            });
+            if (itemClickListener != null) {
+                imageView.setOnClickListener(vhListener);
+                textView.setOnClickListener(vhListener);
+            }
         }
+
+        private View.OnClickListener vhListener = (v -> {
+            int position = getAdapterPosition();
+            itemClickListener.onItemClick(v, position);
+        });
 
         void setData(int cityImage, int cityName) {
             getImageView().setImageResource(cityImage);
