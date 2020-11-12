@@ -1,7 +1,9 @@
 package com.example.dzchumanov04;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Objects;
 
 public class FragmentWeather extends Fragment {
     private static final String CITY = "CITY";
     private Context application;
     private Context context;
+    private View container;
 
     static FragmentWeather create(City city) {
         FragmentWeather fragment = new FragmentWeather();
@@ -43,6 +48,7 @@ public class FragmentWeather extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         application = inflater.getContext();
         context = getContext();
+        this.container = container;
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
@@ -62,7 +68,7 @@ public class FragmentWeather extends Fragment {
             details.setVisibility(View.VISIBLE);
 
             details.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW, curCity.getLink());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(curCity.getLink()));
                 startActivity(intent);
             });
             name.setText(curCity.getName());

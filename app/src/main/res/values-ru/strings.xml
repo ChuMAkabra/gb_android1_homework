@@ -15,4 +15,5 @@
     <string name="details">Подробнее</string>
     <string name="city_image">Фото города</string>
     <string name="weather_icon">Иконка погоды</string>
+    <string name="snackBar">Больше в Подробнее или на</string>
 </resources>

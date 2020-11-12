@@ -1,7 +1,9 @@
 package com.example.dzchumanov04;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
@@ -77,18 +81,33 @@ public class FragmentCity extends Fragment {
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.frContainer, FragmentWeather.create (sourceChangeableData.getCity(position)))
-                            .addToBackStack(null).commit();
+                            .addToBackStack(null)
+                            .commit();
+
+                    makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
                 }
                 else {
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.frWeather, FragmentWeather.create(sourceChangeableData.getCity(position)))
                             .commit();
+
+                    makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
                 }
             }
         });
         recyclerView.setAdapter(adapter);
         return adapter;
+    }
+
+    private void makeSnackBarWithButton(View v, String link) {
+        Snackbar
+            .make(v, getString(R.string.snackBar), Snackbar.LENGTH_LONG)
+            .setAction("YANDEX", view -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                startActivity(intent);
+                })
+            .show();
     }
 
     @Override

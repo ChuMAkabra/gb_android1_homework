@@ -15,7 +15,7 @@ public class City implements Serializable {
     private static int[] icons_night;   // иконки ночные
     private int name;                   // ID стринги с названием города
     private int image;                  // ID фотографии города
-    private Uri link;                   // ссылка на yandex.ru/pogoda
+    private String link;                // текст ссылки на yandex.ru/pogoda
     private String gmtDiff;             // временная зона
 
     private List<TempStamp> temps;      // история и прогноз погоды
@@ -25,7 +25,7 @@ public class City implements Serializable {
     public City(int name, int image, String link, String gmtDiff, String curTemp, String ... strTemps) {
         this.name = name;
         this.image = image;
-        this.link = Uri.parse(link);
+        this.link = link;
         this.gmtDiff = gmtDiff;
 
         LocalTime localTime = LocalTime.now(ZoneId.of(gmtDiff));
@@ -64,7 +64,7 @@ public class City implements Serializable {
         return image;
     }
 
-    public Uri getLink() {
+    public String getLink() {
         return link;
     }
 
