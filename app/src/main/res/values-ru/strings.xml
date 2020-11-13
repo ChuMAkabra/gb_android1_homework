@@ -18,4 +18,7 @@
     <string name="snackBar">Больше в Подробнее или на</string>
     <string name="settings">Настройки</string>
     <string name="about">О приложении</string>
+    <string name="version_0_0_7">версия 0.0.7</string>
+    <string name="website_text">Сайт разработчика:</string>
+    <string name="app_icon_desc">Иконка приложения</string>
 </resources>

@@ -14,14 +14,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/w02d_few" />
+        app:srcCompat="@drawable/w02d_few"
+        android:contentDescription="@string/app_icon_desc" />
 
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="24sp"
         android:layout_marginTop="8dp"
-        android:text="WeathApp"
+        android:text="@string/weathapp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appIcon" />
@@ -30,27 +32,27 @@
         android:id="@+id/appVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="version 0.0.7"
+        android:text="@string/version_0_0_7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appName" />
 
     <TextView
-        android:id="@+id/website"
+        android:id="@+id/websiteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Developer's personal website:"
+        android:text="@string/website_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appVersion" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/websiteLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="http://d91511ib.beget.tech"
+        android:text="@string/website"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/website" />
+        app:layout_constraintTop_toBottomOf="@+id/websiteText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

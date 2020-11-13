@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 
 public class WeatherActivityFr extends AbstractActivity {
     @Override
@@ -54,12 +53,12 @@ public class WeatherActivityFr extends AbstractActivity {
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.frContainer, new FragmentCity())
+                            .replace(R.id.frContainer, new FragmentAbout())
                             .commit();
                 } else {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.frWeather, new FragmentCity())
+                            .replace(R.id.frWeather, new FragmentAbout())
                             .commit();
                 }
 
