@@ -16,4 +16,6 @@
     <string name="city_image">City photo</string>
     <string name="weather_icon">Weather icon</string>
     <string name="snackBar">For more press Details or</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
 </resources>

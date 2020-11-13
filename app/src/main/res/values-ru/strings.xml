@@ -16,4 +16,6 @@
     <string name="city_image">Фото города</string>
     <string name="weather_icon">Иконка погоды</string>
     <string name="snackBar">Больше в Подробнее или на</string>
+    <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
 </resources>
