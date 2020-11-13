@@ -27,12 +27,11 @@ public class FragmentAbout extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         TextView website = view.findViewById(R.id.websiteLink);
-        String websiteText = website.getText().toString();
+
         website.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(((TextView) v).getText().toString()));
             startActivity(intent);
-            Toast.makeText(this.getContext(), "hi there!!!", Toast.LENGTH_LONG).show();
         });
     }
 }
