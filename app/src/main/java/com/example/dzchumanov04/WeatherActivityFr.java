@@ -7,25 +7,46 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 
 public class WeatherActivityFr extends AbstractActivity {
+
+    private void createFragment(int resIdLand, Class<? extends Fragment> cls) throws InstantiationException, IllegalAccessException {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // в портретной ориентации при нажатии кнопки "Назад" всегда возвращаться к списку
+            if (cls == FragmentCity.class || getSupportFragmentManager().getBackStackEntryCount() == 1 ) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frContainer, cls.newInstance())
+                        .commit();
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frContainer, cls.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
+        else {
+            // в альбомной ориентации при нажатии кнопки "Назад" приложение закрывается
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(resIdLand, cls.newInstance())
+                    .commit();
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_fr);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frContainer, new FragmentCity())
-                    .commit();
-        }
-        else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frCity, new FragmentCity())
-//                    .replace(R.id.frWeather, new FragmentWeather())
-                    .commit();
+        try {
+            createFragment(R.id.frCity, FragmentCity.class);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
@@ -43,27 +64,17 @@ public class WeatherActivityFr extends AbstractActivity {
          * Система пишет: "Resource IDs will be non-final in Android Gradle Plugin version 5.0, avoid using them in switch case statements"
          * Не совсем  понял причины. Так не стоит все же?
          */
-        //TODO замени тост переходом на соответствующую страницу
-        switch (item.getItemId()) {
-            case R.id.settings:
-                Toast.makeText(getApplicationContext(), getString(R.string.settings), Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.about:
-                Toast.makeText(this, getString(R.string.about), Toast.LENGTH_SHORT).show();
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frContainer, new FragmentAbout())
-                            .commit();
-                } else {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frWeather, new FragmentAbout())
-                            .commit();
-                }
-
-
-                return true;
+        try {
+            switch (item.getItemId()) {
+                case R.id.settings:
+                    createFragment(R.id.frWeather, FragmentSettings.class);
+                    return true;
+                case R.id.about:
+                    createFragment(R.id.frWeather, FragmentAbout.class);
+                    return true;
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
         return true;
     }
