@@ -6,9 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 
 public class WeatherActivityFr extends AbstractActivity {
@@ -42,12 +42,24 @@ public class WeatherActivityFr extends AbstractActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_fr);
+        if (savedInstanceState != null) {
+            String frClass = savedInstanceState.getString("CLASS_NAME");
+            setFragmentToDisplay(frClass);
+        }
 
+        if(getFragmentToDisplay() == null) setFragmentToDisplay(FragmentCity.class.getName());
         try {
-            createFragment(R.id.frCity, FragmentCity.class);
-        } catch (InstantiationException | IllegalAccessException e) {
+            createFragment(R.id.frCity, (Class<? extends Fragment>) Class.forName(getFragmentToDisplay()));
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Bundle bundle = new Bundle();
+        bundle.putString("CLASS_NAME", getFragmentToDisplay());
     }
 
     @Override

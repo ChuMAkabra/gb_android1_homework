@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 
 /**
  * Создал этот абстрактный класс для логирования методов обратного вызова
@@ -21,6 +22,16 @@ public abstract class AbstractActivity extends AppCompatActivity {
     protected String className = this.getClass().getName();
     protected final String SP_NAME = "WEATHER";
     protected final String SP_DARK_THEME = "IS_DARK_THEME";
+
+    public void setFragmentToDisplay(String fragmentToDisplay) {
+        this.fragmentToDisplay = fragmentToDisplay;
+    }
+
+    public String getFragmentToDisplay() {
+        return fragmentToDisplay;
+    }
+
+    protected String fragmentToDisplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

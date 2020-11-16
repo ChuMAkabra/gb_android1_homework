@@ -24,7 +24,14 @@ public class FragmentSettings extends Fragment {
 
         SwitchCompat switchTheme = view.findViewById(R.id.swDarkTheme);
         switchTheme.setChecked(((WeatherActivityFr)getActivity()).isDarkTheme());
-        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) ->
-                ((WeatherActivityFr) getActivity()).setDarkTheme(isChecked));
+        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ((WeatherActivityFr) getActivity()).setFragmentToDisplay(FragmentSettings.class.getName());
+            ((WeatherActivityFr) getActivity()).setDarkTheme(isChecked);
+        });
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 }
