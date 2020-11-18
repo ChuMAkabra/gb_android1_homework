@@ -1,6 +1,5 @@
 package com.example.dzchumanov04;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,27 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Objects;
 
-public class FragmentWeather extends Fragment {
+public class FragmentWeather extends AbstractFragment {
     private static final String CITY = "CITY";
     private Context application;
     private Context context;
-    private View container;
 
     static FragmentWeather create(City city) {
         FragmentWeather fragment = new FragmentWeather();
@@ -48,7 +41,6 @@ public class FragmentWeather extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         application = inflater.getContext();
         context = getContext();
-        this.container = container;
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 

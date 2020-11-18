@@ -4,30 +4,24 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
 public class WeatherActivityFr extends AbstractActivity {
+    private final String PREVIOUS_ORIENTATION = "PREVIOUS_ORIENTATION";
 
     private void createFragment(int resIdLand, Class<? extends Fragment> cls) throws InstantiationException, IllegalAccessException {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             // в портретной ориентации при нажатии кнопки "Назад" всегда возвращаться к списку
-            if (cls == FragmentCity.class || getSupportFragmentManager().getBackStackEntryCount() == 1 ) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frContainer, cls.newInstance())
-                        .commit();
-            } else {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frContainer, cls.newInstance())
-                        .addToBackStack(null)
-                        .commit();
-            }
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frContainer, cls.newInstance());
+            if (cls != FragmentCity.class && getSupportFragmentManager().getBackStackEntryCount() != 1)
+                transaction.addToBackStack(null);
+            transaction.commit();
         }
         else {
             // в альбомной ориентации при нажатии кнопки "Назад" приложение закрывается
@@ -43,10 +37,13 @@ public class WeatherActivityFr extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_fr);
 
-        try {
-            createFragment(R.id.frCity, FragmentCity.class);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        if (savedInstanceState == null ||
+                savedInstanceState.getInt(PREVIOUS_ORIENTATION) != getResources().getConfiguration().orientation) {
+            try {
+                createFragment(R.id.frCity, FragmentCity.class);
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -77,5 +74,11 @@ public class WeatherActivityFr extends AbstractActivity {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(PREVIOUS_ORIENTATION, getResources().getConfiguration().orientation);
     }
 }

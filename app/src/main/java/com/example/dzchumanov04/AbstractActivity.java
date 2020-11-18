@@ -2,13 +2,13 @@ package com.example.dzchumanov04;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 /**
  * Создал этот абстрактный класс для логирования методов обратного вызова
@@ -33,6 +33,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
         Log.d(className, "onCreate()");
     }
 
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -52,9 +53,19 @@ public abstract class AbstractActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.d(className, "onResume()");
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -101,5 +112,5 @@ public abstract class AbstractActivity extends AppCompatActivity {
 //            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         recreate();
-    };
+    }
 }

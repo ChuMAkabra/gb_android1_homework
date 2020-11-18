@@ -1,11 +1,8 @@
 package com.example.dzchumanov04;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
