@@ -1,6 +1,8 @@
 <resources>
+
     <!-- Базовая тема приложения -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -13,6 +15,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.MaterialComponents">
+    <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar">
     </style>
 </resources>

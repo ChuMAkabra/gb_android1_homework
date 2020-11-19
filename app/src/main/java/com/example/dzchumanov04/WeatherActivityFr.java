@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 
 public class WeatherActivityFr extends AbstractActivity {
@@ -37,6 +41,8 @@ public class WeatherActivityFr extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_fr);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (savedInstanceState == null ||
                 savedInstanceState.getInt(PREVIOUS_ORIENTATION) != getResources().getConfiguration().orientation) {
             try {
@@ -49,7 +55,7 @@ public class WeatherActivityFr extends AbstractActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+//        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
