@@ -83,7 +83,6 @@ public class FragmentCity extends AbstractFragment {
                             .addToBackStack(null)
                             .commit();
 
-                    makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
                 }
                 else {
                     getFragmentManager()
@@ -91,8 +90,8 @@ public class FragmentCity extends AbstractFragment {
                             .replace(R.id.frWeather, FragmentWeather.create(sourceChangeableData.getCity(position)))
                             .commit();
 
-                    makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
                 }
+                makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
             }
         });
         recyclerView.setAdapter(adapter);
