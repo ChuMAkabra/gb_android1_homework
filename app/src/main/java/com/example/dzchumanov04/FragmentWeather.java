@@ -2,10 +2,11 @@ package com.example.dzchumanov04;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,21 @@ import com.example.dzchumanov04.model.WeatherRequest;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -39,8 +50,20 @@ public class FragmentWeather extends AbstractFragment {
     private static final String CITY = "CITY";
     private Context application;
     private Context context;
-    private String WEATHER_URL_DOMAIN = "https://api.openweathermap.org/data/2.5";
+    private final Handler handler = new Handler(); // хендлер, указывающий на основной (UI) поток
+    private final String WEATHER_URL_DOMAIN = "https://api.openweathermap.org/data/2.5";
+    private String curTemp;
+    private Bitmap curIcon;
     private Hourly[] hourly;
+    private long timezoneOffset;
+    private List<String>  times;
+    private List<Bitmap> images;
+    private List<String>  temps;
+
+    TextView temp;
+    ImageView sky;
+    TextView details;
+    TextView name;
 
     static FragmentWeather create(City city) {
         FragmentWeather fragment = new FragmentWeather();
@@ -50,9 +73,11 @@ public class FragmentWeather extends AbstractFragment {
 
         return fragment;
     }
+
     City getCurrentCity() {
         return (City) (getArguments() != null ? getArguments().getSerializable(CITY) : null);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,81 +92,73 @@ public class FragmentWeather extends AbstractFragment {
         super.onViewCreated(view, savedInstanceState);
         ConstraintLayout constraintLayout = (ConstraintLayout) view;
         RecyclerView rvForecast = constraintLayout.findViewById(R.id.rvForecast);
-        TextView temp = constraintLayout.findViewById(R.id.tvTemp);
-        ImageView sky = constraintLayout.findViewById(R.id.ivIcon);
-        TextView details = constraintLayout.findViewById(R.id.tvDetails);
-        TextView name = constraintLayout.findViewById(R.id.tvCity);
+        temp = constraintLayout.findViewById(R.id.tvTemp);
+        sky = constraintLayout.findViewById(R.id.ivIcon);
+        details = constraintLayout.findViewById(R.id.tvDetails);
+        name = constraintLayout.findViewById(R.id.tvCity);
 
         City curCity = getCurrentCity();
-        //TODO: получать всю эту инфу с сервера
+        Thread thread = new Thread(() -> {
+            // запрос 1: через Current Weather Api получить координаты, текущие температуру и иконку погоды выбранного города
+            String apiCall = String.format("%s/weather?q=%s&units=metric&appid=%s", WEATHER_URL_DOMAIN, getString(curCity.getName()), BuildConfig.WEATHER_API_KEY);
+            final WeatherRequest weatherRequest = (WeatherRequest) getObjectFromGson(apiCall, WeatherRequest.class);
+            curTemp = floatTempToString(weatherRequest.getMain().getTemp());
+            curIcon = getBitmap(weatherRequest.getWeather()[0].getIcon());
+            float lat = weatherRequest.getCoord().getLat();
+            float lon = weatherRequest.getCoord().getLon();
 
-        // Получаем хендлер, указывающий на основной (UI) поток
-        String apiCall = String.format("%s/weather?q=%s&units=metric&appid=%s", WEATHER_URL_DOMAIN, getString(curCity.getName()), BuildConfig.WEATHER_API_KEY);
+            // запрос 2: через One Call Api по координатам получить почасовой прогноз погоды на 2 дня вперед и имена иконок погоды
+            String apiCall2 = String.format("%s/onecall?lat=%s&lon=%s&units=metric&exclude=minutely,daily,alerts&appid=%s", WEATHER_URL_DOMAIN, Float.toString(lat), Float.toString(lon), BuildConfig.WEATHER_API_KEY);
+            WeatherOneCall weatherOneCall = (WeatherOneCall) getObjectFromGson(apiCall2, WeatherOneCall.class);
+            hourly = weatherOneCall.getHourly();
+            timezoneOffset = weatherOneCall.getTimezone_offset();
+            images = new ArrayList<>();
+
+            // запрос 3: по именам иконок загрузить их изображения с сервера
+            // получаем лист всех иконок
+            List<String> imageNamesAll = new ArrayList<>();
+            for (Hourly value : hourly) {
+                imageNamesAll.add(value.getWeather()[0].getIcon());
+            }
+            // получаем набор уникальных иконок
+            Set<String> imageNamesUnique = new HashSet<>(imageNamesAll);
+            // получаем хэш-таблицу уникальных битмапов
+            Map<String, Bitmap> imagesUnique = new HashMap<>(imageNamesUnique.size());
+            // устанавливаем обратный отчет потоков
+            CountDownLatch countDownLatch = new CountDownLatch(imageNamesUnique.size());
+            // создаем динамический пул потоков
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            // для каждой уникальной картинки:
+            for (String iName : imageNamesUnique) {
+                // качаем картинку в отдельном потоке
+                executorService.execute(() -> {
+                    Bitmap image = getBitmap(iName);
+                    if (image != null) imagesUnique.put(iName,image);
+                    countDownLatch.countDown();
+                });
+            }
+            // дожидаемся завершения всех потоков
+            try {
+                countDownLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // закрываем пул потоков
+            executorService.shutdown();
+            // получаем лист всех битмапов
+            for (String name : imageNamesAll) {
+                images.add(imagesUnique.get(name));
+            }
+        });
+        thread.start();
         try {
-            final URL url = new URL(apiCall);
-            final Handler handler = new Handler();
-            new Thread(() -> {
-                HttpsURLConnection urlConnection = null;
-                try{
-                    // 1) Открываем соединение
-                    urlConnection = (HttpsURLConnection) url.openConnection();
-                    // 2) Подготоваливаем запрос
-                    // устанавливаем метод протокола - GET (получение данных)
-                    urlConnection.setRequestMethod("GET");
-                    // устанавливаем таймаут (ожидание не больше 10 сек)
-                    urlConnection.setReadTimeout(10000);
-                    // 3) Читаем данные в поток
-                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    // сохраняем все данные в виде строки
-                    String strData = getLines(in);
-                    // преобразуем данных запроса в модель посредством библиотеки Gson
-                    Gson gson = new Gson();
-                    final WeatherRequest weatherRequest = gson.fromJson(strData, WeatherRequest.class);
-                    Time t = new Time((weatherRequest.getDt() + weatherRequest.getTimezone())*1000);
-
-                    handler.post(() -> Toast.makeText(this.getContext(), String.format("Time = %s. Temp = %s", t.toString(), Float.toString(weatherRequest.getMain().getTemp())), Toast.LENGTH_LONG).show());
-
-                    float lat = weatherRequest.getCoord().getLat();
-                    float lon = weatherRequest.getCoord().getLon();
-                    String apiCall2 = String.format("%s/onecall?lat=%s&lon=%s&units=metric&exclude=minutely,daily,alerts&appid=%s", WEATHER_URL_DOMAIN, Float.toString(lat), Float.toString(lon), BuildConfig.WEATHER_API_KEY);
-
-                    final URL url2 = new URL(apiCall2);
-                    try {
-                        HttpsURLConnection urlConnection2 = (HttpsURLConnection) url2.openConnection();
-                        BufferedReader in2 = new BufferedReader(new InputStreamReader(urlConnection2.getInputStream()));
-                        String strData2 = getLines(in2);
-                        WeatherOneCall weatherOneCall = gson.fromJson(strData2, WeatherOneCall.class);
-                        hourly = weatherOneCall.getHourly();
-//                        Time t2 = new Time((hourly[1].getDt() + weatherOneCall.getTimezone_offset()) *1000);
-//                        for (Hourly h : hourly) {
-//                            Time t3 = new Time((h.getDt() + weatherOneCall.getTimezone_offset())*1000);
-//                            Log.d("HOURLY_TEST", t3.toString());
-//                        }
-//                        handler.post(() -> Toast.makeText(this.getContext(), String.format("Later: Time = %s. Temp = %s", t2.toString(), Float.toString(hourly[5].getTemp())), Toast.LENGTH_LONG).show());
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }finally {
-                        if (urlConnection != null)
-                        urlConnection.disconnect();
-                    }
-
-                }catch (Exception e) {
-                    Log.d(this.className, "Something went wrong...");
-                    handler.post(() -> Toast.makeText(this.getContext(), "Something went wrong...!", Toast.LENGTH_LONG).show());
-                    e.printStackTrace();
-                }finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-
-            }).start();
-        } catch (MalformedURLException e) {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         if (curCity != null) {
-            temp.setText(curCity.getCurTemp().getTemp());
+            temp.setText(curTemp);
             details.setVisibility(View.VISIBLE);
 
             details.setOnClickListener(v -> {
@@ -149,8 +166,21 @@ public class FragmentWeather extends AbstractFragment {
                 startActivity(intent);
             });
             name.setText(curCity.getName());
-            int icon = curCity.getCurTemp().getIcon();
-            sky.setImageResource(icon);
+
+            //TODO: подгружать иконки по hourly[т].getWeather()[т].getIcon()
+            times = new ArrayList<>();
+            temps = new ArrayList<>();
+            for (Hourly h : hourly) {
+                Time t3 = new Time((h.getDt() + timezoneOffset) * 1000);
+                // не показывать секунды
+                times.add(t3.toString());
+                temps.add(floatTempToString(h.getTemp()));
+            }
+
+            // установим текущую картинку
+            sky.setImageBitmap(curIcon);
+//            int icon = curCity.getCurTemp().getIcon();
+//            sky.setImageResource(icon);
         }
 
         // добавляем к RV менеджер макетов
@@ -162,8 +192,73 @@ public class FragmentWeather extends AbstractFragment {
         rvForecast.addItemDecoration(decorator);
         // добавляем к RV адаптер
         AdapterWeather adapterWeather = null;
-        if (curCity != null) adapterWeather = new AdapterWeather(curCity);
+
+//        if (curCity != null) adapterWeather = new AdapterWeather(curCity);
+        if(times != null) adapterWeather = new AdapterWeather(times, images, temps);
         rvForecast.setAdapter(adapterWeather);
+    }
+
+    private Object getObjectFromGson(String apiCall, Class<? extends Object> objClass) {
+        HttpsURLConnection urlConnection = null;
+        InputStream in = null;
+        try {
+            URL url = new URL(apiCall);
+            // 1) Открываем соединение
+            urlConnection = (HttpsURLConnection) url.openConnection();
+            // 2) Подготоваливаем запрос
+            // устанавливаем метод протокола - GET (получение данных)
+            urlConnection.setRequestMethod("GET");
+            // устанавливаем таймаут (ожидание не больше 10 сек)
+            urlConnection.setReadTimeout(10000);
+
+            // 3) Читаем данные в поток
+            BufferedReader inReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            // сохраняем все данные в виде строки
+            String strData = getLines(inReader);
+            // преобразуем данные запроса в модель посредством библиотеки Gson
+            Gson gson = new Gson();
+            return gson.fromJson(strData, objClass);
+        } catch (IOException e) {
+            e.printStackTrace();
+            handler.post(() -> Toast.makeText(this.getContext(), "Something went wrong...!", Toast.LENGTH_LONG).show());
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return null;
+    }
+
+    private Bitmap getBitmap(String imageName) {
+        String apiCall = String.format("https://openweathermap.org/img/wn/%s@2x.png", imageName);
+
+        HttpsURLConnection urlConnection = null;
+        Bitmap image = null;
+        try {
+            URL url = new URL(apiCall);
+            // 1) Открываем соединение
+            urlConnection = (HttpsURLConnection) url.openConnection();
+            // 2) Подготоваливаем запрос
+            // устанавливаем метод протокола - GET (получение данных)
+            urlConnection.setRequestMethod("GET");
+            // устанавливаем таймаут (ожидание не больше 10 сек)
+            urlConnection.setReadTimeout(10000);
+
+            InputStream in = urlConnection.getInputStream();
+            image = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+            handler.post(() -> Toast.makeText(this.getContext(), "Something went wrong...!", Toast.LENGTH_LONG).show());
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return image;
+    }
+
+    private String floatTempToString(float temp) {
+        return String.format("%d°C", Math.round(temp));
     }
 
     private String getLines(BufferedReader in) {
