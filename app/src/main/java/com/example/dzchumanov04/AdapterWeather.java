@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHolder> {
-    List<TempStamp> tempStamps;
     List<String> times;
     List<Bitmap> images;
     List<String> temps;

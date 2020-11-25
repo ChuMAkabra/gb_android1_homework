@@ -60,6 +60,7 @@ public class FragmentWeather extends AbstractFragment {
     private List<Bitmap> images;
     private List<String>  temps;
 
+    private RecyclerView rvForecast;
     TextView temp;
     ImageView sky;
     TextView details;
@@ -90,13 +91,7 @@ public class FragmentWeather extends AbstractFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ConstraintLayout constraintLayout = (ConstraintLayout) view;
-        RecyclerView rvForecast = constraintLayout.findViewById(R.id.rvForecast);
-        temp = constraintLayout.findViewById(R.id.tvTemp);
-        sky = constraintLayout.findViewById(R.id.ivIcon);
-        details = constraintLayout.findViewById(R.id.tvDetails);
-        name = constraintLayout.findViewById(R.id.tvCity);
-
+        // получить данные с сервера
         City curCity = getCurrentCity();
         Thread thread = new Thread(() -> {
             // запрос 1: через Current Weather Api получить координаты, текущие температуру и иконку погоды выбранного города
@@ -157,30 +152,40 @@ public class FragmentWeather extends AbstractFragment {
             e.printStackTrace();
         }
 
+        // вывести данные в элементы фрагмента
         if (curCity != null) {
-            temp.setText(curTemp);
-            details.setVisibility(View.VISIBLE);
+            // получить ссылки на элементы фрагмента
+            ConstraintLayout constraintLayout = (ConstraintLayout) view;
+            rvForecast = constraintLayout.findViewById(R.id.rvForecast);
+            temp = constraintLayout.findViewById(R.id.tvTemp);
+            sky = constraintLayout.findViewById(R.id.ivIcon);
+            details = constraintLayout.findViewById(R.id.tvDetails);
+            name = constraintLayout.findViewById(R.id.tvCity);
 
+            //TODO: заменить ограниченный набор городов на запрос пользователя
+            temp.setText(curTemp);
+            name.setText(curCity.getName());
+            //TODO: автоматически генерировать ссылку на яндекс
+            details.setVisibility(View.VISIBLE);
             details.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(curCity.getLink()));
                 startActivity(intent);
             });
-            name.setText(curCity.getName());
 
-            //TODO: подгружать иконки по hourly[т].getWeather()[т].getIcon()
             times = new ArrayList<>();
             temps = new ArrayList<>();
             for (Hourly h : hourly) {
                 Time t3 = new Time((h.getDt() + timezoneOffset) * 1000);
+
                 // не показывать секунды
-                times.add(t3.toString());
+                String[] strSplit = t3.toString().split(":");
+                String hour = String.format("%s:%s", strSplit[0], strSplit[1]);
+                times.add(hour);
                 temps.add(floatTempToString(h.getTemp()));
             }
 
             // установим текущую картинку
             sky.setImageBitmap(curIcon);
-//            int icon = curCity.getCurTemp().getIcon();
-//            sky.setImageResource(icon);
         }
 
         // добавляем к RV менеджер макетов
@@ -236,12 +241,8 @@ public class FragmentWeather extends AbstractFragment {
         Bitmap image = null;
         try {
             URL url = new URL(apiCall);
-            // 1) Открываем соединение
             urlConnection = (HttpsURLConnection) url.openConnection();
-            // 2) Подготоваливаем запрос
-            // устанавливаем метод протокола - GET (получение данных)
             urlConnection.setRequestMethod("GET");
-            // устанавливаем таймаут (ожидание не больше 10 сек)
             urlConnection.setReadTimeout(10000);
 
             InputStream in = urlConnection.getInputStream();

@@ -17,24 +17,12 @@ class CitySource implements CityDataSource {
 
     CitySource init(){
         // передача списка иконок
-        int[] icons_day = getArray(R.array.icons_day);
-        int[] icons_night = getArray(R.array.icons_night);
-        City.setIcons_day(icons_day);
-        City.setIcons_night(icons_night);
-
         int[] names = getArray(R.array.cities); // строки описаний из ресурсов
         int[] images = getArray(R.array.pictures); // изображения
         String[] links = resources.getStringArray(R.array.links); // ссылка на yandex.ru/pogoda
-        String[] gmtDiff = resources.getStringArray(R.array.time_zone); // разница во времени с GMT
-        String[] temp2hBefore = resources.getStringArray(R.array.temp_2before);    // температура 2 часа назад
-        String[] temp1hBefore = resources.getStringArray(R.array.temp_1before);    // температура 1 час  назад
-        String[] curTemp = resources.getStringArray(R.array.temp);   // температура сейчас
-        String[] temp1hAfter = resources.getStringArray(R.array.temp_1after);     // температура через 1 час
-        String[] temp2hAfter = resources.getStringArray(R.array.temp_2after);     // температура через 2 часа
         // заполнение источника данных
         for (int i = 0; i < names.length; i++) {
-            dataSource.add(new City(names[i], images[i], links[i], gmtDiff[i], curTemp[i],
-                    temp2hBefore[i], temp1hBefore[i], temp1hAfter[i], temp2hAfter[i]));
+            dataSource.add(new City(names[i], images[i], links[i]));
         }
         return this;
     }
@@ -57,6 +45,5 @@ class CitySource implements CityDataSource {
             answer[i] = ta.getResourceId(i, 0);
         }
         return answer;
-    }    
-    
+    }
 }

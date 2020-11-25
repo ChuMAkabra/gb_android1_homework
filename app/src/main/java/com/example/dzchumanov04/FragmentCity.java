@@ -38,17 +38,15 @@ public class FragmentCity extends AbstractFragment {
         recyclerView = view.findViewById(R.id.rvCity);
 
         // строим источник данных (пока это интерфейс)
-        CityDataSource sourceData = new CitySourceBuilder()
+        final CityDataSource sourceData = new CitySourceBuilder()
                 .setResources(getResources())
                 .build();
 
-        // Декорируем источник данных, теперь он изменяем (можно добавлять/удалять элементы)
-        final CityChangeableSource sourceChangeableData = new CityChangeableSource(sourceData);
         // Создаем RecyclerView и возвращаем его адаптер
-        final AdapterCity adapter = initRecyclerView(sourceChangeableData);
+        final AdapterCity adapter = initRecyclerView(sourceData);
     }
 
-    private AdapterCity initRecyclerView(CityChangeableSource sourceChangeableData) {
+    private AdapterCity initRecyclerView(CityDataSource sourceData) {
         // получаем RV
         // Эта установка служит для повышения производительности системы
         // (все элементы будут иметь одинаковый размер, и не надо его пересчитывать)
@@ -62,7 +60,7 @@ public class FragmentCity extends AbstractFragment {
         recyclerView.addItemDecoration(decorator);
 
         //добавляем адаптер
-        AdapterCity adapter = new AdapterCity(sourceChangeableData);
+        AdapterCity adapter = new AdapterCity(sourceData);
 
         /**
          *  Я верно понимаю, что такой подход нужен именно для того, чтобы не
@@ -79,7 +77,7 @@ public class FragmentCity extends AbstractFragment {
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.frContainer, FragmentWeather.create (sourceChangeableData.getCity(position)))
+                            .replace(R.id.frContainer, FragmentWeather.create (sourceData.getCity(position)))
                             .addToBackStack(null)
                             .commit();
 
@@ -87,11 +85,11 @@ public class FragmentCity extends AbstractFragment {
                 else {
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.frWeather, FragmentWeather.create(sourceChangeableData.getCity(position)))
+                            .replace(R.id.frWeather, FragmentWeather.create(sourceData.getCity(position)))
                             .commit();
 
                 }
-                makeSnackBarWithButton(v, sourceChangeableData.getCity(position).getLink());
+//                makeSnackBarWithButton(v, sourceData.getCity(position).getLink());
             }
         });
         recyclerView.setAdapter(adapter);
