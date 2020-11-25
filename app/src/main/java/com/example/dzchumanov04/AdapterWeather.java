@@ -17,9 +17,6 @@ public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHold
     List<Bitmap> images;
     List<String> temps;
 
-//    public AdapterWeather (City city) {
-//        tempStamps = city.getTemps();
-//    }
     public AdapterWeather (List<String > times, List<Bitmap> images, List<String> temps) {
         this.times = times;
         this.images = images;
@@ -36,14 +33,12 @@ public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        TempStamp temp = tempStamps.get(position);
         holder.setData(times.get(position), images.get(position), temps.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return temps.size();
-//        return tempStamps.size();
+        return images.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,11 +52,6 @@ public class AdapterWeather extends RecyclerView.Adapter<AdapterWeather.ViewHold
             this.ivSky = itemView.findViewById(R.id.ivSky);
             this.tvTemp = itemView.findViewById(R.id.tvTemp);
         }
-//        public void setData(String time, int icon, String temp) {
-//            tvTime.setText(time);
-//            ivSky.setImageResource(icon);
-//            tvTemp.setText(temp);
-//        }
 
         public void setData(String time, Bitmap image, String temp) {
             tvTime.setText(time);

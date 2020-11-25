@@ -75,10 +75,6 @@ public class FragmentWeather extends AbstractFragment {
         return fragment;
     }
 
-    City getCurrentCity() {
-        return (City) (getArguments() != null ? getArguments().getSerializable(CITY) : null);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,11 +84,28 @@ public class FragmentWeather extends AbstractFragment {
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
+    City getCurrentCity() {
+        return (City) (getArguments() != null ? getArguments().getSerializable(CITY) : null);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // получить данные с сервера
+
+        // получим из values/arrays данные выбранного города (название, фото и ссылку)
+        //TODO: будет изменено в первом задании следующего курса
         City curCity = getCurrentCity();
+        if (curCity != null) {
+            // получим данные с сервера
+            downloadData(curCity);
+            // выведем данные в элементы фрагмента
+            outputData((ConstraintLayout) view, curCity);
+        }
+        // создадим и установим Recycler View для прогноза погоды
+        addRecyclerView(view);
+    }
+
+    private void downloadData(City curCity) {
         Thread thread = new Thread(() -> {
             // запрос 1: через Current Weather Api получить координаты, текущие температуру и иконку погоды выбранного города
             String apiCall = String.format("%s/weather?q=%s&units=metric&appid=%s", WEATHER_URL_DOMAIN, getString(curCity.getName()), BuildConfig.WEATHER_API_KEY);
@@ -151,43 +164,40 @@ public class FragmentWeather extends AbstractFragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
-        // вывести данные в элементы фрагмента
-        if (curCity != null) {
-            // получить ссылки на элементы фрагмента
-            ConstraintLayout constraintLayout = (ConstraintLayout) view;
-            rvForecast = constraintLayout.findViewById(R.id.rvForecast);
-            temp = constraintLayout.findViewById(R.id.tvTemp);
-            sky = constraintLayout.findViewById(R.id.ivIcon);
-            details = constraintLayout.findViewById(R.id.tvDetails);
-            name = constraintLayout.findViewById(R.id.tvCity);
+    private void outputData(@NonNull ConstraintLayout view, City curCity) {
+        // получим ссылки на элементы фрагмента
+        rvForecast = view.findViewById(R.id.rvForecast);
+        temp = view.findViewById(R.id.tvTemp);
+        sky = view.findViewById(R.id.ivIcon);
+        details = view.findViewById(R.id.tvDetails);
+        name = view.findViewById(R.id.tvCity);
 
-            //TODO: заменить ограниченный набор городов на запрос пользователя
-            temp.setText(curTemp);
-            name.setText(curCity.getName());
-            //TODO: автоматически генерировать ссылку на яндекс
-            details.setVisibility(View.VISIBLE);
-            details.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(curCity.getLink()));
-                startActivity(intent);
-            });
+        //TODO: заменить ограниченный набор городов на запрос пользователя
+        temp.setText(curTemp);
+        name.setText(curCity.getName());
+        //TODO: автоматически генерировать ссылку на Яндекс
+        details.setVisibility(View.VISIBLE);
+        details.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(curCity.getLink()));
+            startActivity(intent);
+        });
 
-            times = new ArrayList<>();
-            temps = new ArrayList<>();
-            for (Hourly h : hourly) {
-                Time t3 = new Time((h.getDt() + timezoneOffset) * 1000);
-
-                // не показывать секунды
-                String[] strSplit = t3.toString().split(":");
-                String hour = String.format("%s:%s", strSplit[0], strSplit[1]);
-                times.add(hour);
-                temps.add(floatTempToString(h.getTemp()));
-            }
-
-            // установим текущую картинку
-            sky.setImageBitmap(curIcon);
+        // заполним данные времени и температуры
+        times = new ArrayList<>();
+        temps = new ArrayList<>();
+        for (Hourly h : hourly) {
+            // в API время в секундах, а Time() требует милисекунды
+            Time time = new Time((h.getDt() + timezoneOffset) * 1000);
+            times.add(timeToString(time));
+            temps.add(floatTempToString(h.getTemp()));
         }
+        // установим текущую картинку
+        sky.setImageBitmap(curIcon);
+    }
 
+    private void addRecyclerView(@NonNull View view) {
         // добавляем к RV менеджер макетов
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvForecast.setLayoutManager(layoutManager);
@@ -197,10 +207,12 @@ public class FragmentWeather extends AbstractFragment {
         rvForecast.addItemDecoration(decorator);
         // добавляем к RV адаптер
         AdapterWeather adapterWeather = null;
-
-//        if (curCity != null) adapterWeather = new AdapterWeather(curCity);
         if(times != null) adapterWeather = new AdapterWeather(times, images, temps);
         rvForecast.setAdapter(adapterWeather);
+    }
+
+    private String getLines(BufferedReader in) {
+        return in.lines().collect(Collectors.joining("\n"));
     }
 
     private Object getObjectFromGson(String apiCall, Class<? extends Object> objClass) {
@@ -262,8 +274,10 @@ public class FragmentWeather extends AbstractFragment {
         return String.format("%d°C", Math.round(temp));
     }
 
-    private String getLines(BufferedReader in) {
-        return in.lines().collect(Collectors.joining("\n"));
+    private String timeToString(Time t3) {
+        // не отображаем секунды
+        String[] strSplit = t3.toString().split(":");
+        return String.format("%s:%s", strSplit[0], strSplit[1]);
     }
 
     @Override
