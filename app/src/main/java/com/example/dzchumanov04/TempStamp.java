@@ -1,17 +1,10 @@
 package com.example.dzchumanov04;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-
-import java.sql.Time;
-import java.time.Instant;
+import java.io.Serializable;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.TimeZone;
 
-public class TempStamp {
+public class TempStamp implements Serializable {
     private String time;
     private String temp;
     private String condition;
