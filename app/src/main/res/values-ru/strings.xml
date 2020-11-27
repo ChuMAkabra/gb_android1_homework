@@ -6,6 +6,13 @@
     <string name="city1_btn">Москва</string>
     <string name="city2_btn">Лос-Анджелес</string>
     <string name="city3_btn">Верона</string>
+
+    <string name="city1_vh">Москва</string>
+    <string name="city2_vh">Париж</string>
+    <string name="city3_vh">Барселона</string>
+    <string name="city4_vh">Нью-Йорк</string>
     <string name="back_btn">Назад</string>
     <string name="details">Подробнее</string>
+    <string name="city_image">Фото города</string>
+    <string name="weather_icon">Иконка погоды</string>
 </resources>

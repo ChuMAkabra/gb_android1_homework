@@ -1,4 +1,4 @@
-package com.example.dzchumanov04;
+package com.example.dzchumanov04.deprecated;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,14 +6,12 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-
-
-
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.dzchumanov04.AbstractActivity;
+//import com.example.dzchumanov04.Constants;
+import com.example.dzchumanov04.R;
 
 import java.util.Objects;
 

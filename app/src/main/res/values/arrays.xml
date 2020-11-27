@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="cities">
+        <item>@string/city1_vh</item>
+        <item>@string/city2_vh</item>
+        <item>@string/city3_vh</item>
+        <item>@string/city4_vh</item>
+    </array>
+
+    <array name="pictures">
+        <item>@drawable/moscow</item>
+        <item>@drawable/paris</item>
+        <item>@drawable/barcelona</item>
+        <item>@drawable/new_york</item>
+    </array>
+
+    <array name="icons_day">
+        <item>@drawable/w01d_clear</item>
+        <item>@drawable/w02d_few</item>
+        <item>@drawable/w03_scattered</item>
+        <item>@drawable/w04_broken</item>
+        <item>@drawable/w10d_rain</item>
+        <item>@drawable/w11_shower</item>
+        <item>@drawable/w12_thunder</item>
+        <item>@drawable/w20_snow</item>
+        <item>@drawable/w30_mist</item>
+    </array>
+
+    <array name="icons_night">
+        <item>@drawable/w01n_clear</item>
+        <item>@drawable/w02n_few</item>
+        <item>@drawable/w03_scattered</item>
+        <item>@drawable/w04_broken</item>
+        <item>@drawable/w10n_rain</item>
+        <item>@drawable/w11_shower</item>
+        <item>@drawable/w12_thunder</item>
+        <item>@drawable/w20_snow</item>
+        <item>@drawable/w30_mist</item>
+    </array>
+
+    <string-array name="links">
+        <item>https://yandex.ru/pogoda/moscow</item>
+        <item>https://yandex.ru/pogoda/paris</item>
+        <item>https://yandex.ru/pogoda/barcelona</item>
+        <item>https://yandex.ru/pogoda/new-york</item>
+    </string-array>
+
+    <string-array name="time_zone">
+        <item>GMT+3</item>
+        <item>GMT+1</item>
+        <item>GMT+1</item>
+        <item>GMT-5</item>
+    </string-array>
+
+    <string-array name="temp_2before">
+        <item>+6 snow</item>
+        <item>+9 clear</item>
+        <item>+15 clear </item>
+        <item>+8 rain</item>
+    </string-array>
+
+    <string-array name="temp_1before">
+        <item>+7 rain</item>
+        <item>+10 few</item>
+        <item>+16 clear</item>
+        <item>+9 rain</item>
+    </string-array>
+
+    <string-array name="temp">
+        <item>+8 shower</item>
+        <item>+11 few</item>
+        <item>+17 clear</item>
+        <item>+10 scattered</item>
+    </string-array>
+    
+    <string-array name="temp_1after">
+        <item>+9 thunder</item>
+        <item>+12 broken</item>
+        <item>+18 few</item>
+        <item>+11 few</item>
+    </string-array>
+
+    <string-array name="temp_2after">
+        <item>+10 mist</item>
+        <item>+13 broken</item>
+        <item>+19 few</item>
+        <item>+12 clear</item>
+    </string-array>
+</resources>

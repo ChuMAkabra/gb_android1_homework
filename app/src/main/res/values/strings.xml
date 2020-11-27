@@ -6,6 +6,13 @@
     <string name="city1_btn">Moscow</string>
     <string name="city2_btn">Los Angeles</string>
     <string name="city3_btn">Verona</string>
+
+    <string name="city1_vh">Moscow</string>
+    <string name="city2_vh">Paris</string>
+    <string name="city3_vh">Barcelona</string>
+    <string name="city4_vh">New York</string>
     <string name="back_btn">Back</string>
     <string name="details">Details</string>
+    <string name="city_image">City photo</string>
+    <string name="weather_icon">Weather icon</string>
 </resources>

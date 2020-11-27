@@ -1,4 +1,4 @@
-package com.example.dzchumanov04;
+package com.example.dzchumanov04.deprecated;
 
 final class Constants {
     final static String PARCEL = "parcel";

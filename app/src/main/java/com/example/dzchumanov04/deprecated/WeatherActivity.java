@@ -1,4 +1,4 @@
-package com.example.dzchumanov04;
+package com.example.dzchumanov04.deprecated;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.dzchumanov04.AbstractActivity;
+//import com.example.dzchumanov04.Constants;
+import com.example.dzchumanov04.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +33,12 @@ public class WeatherActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        tvTemp = findViewById(R.id.txtTemp);
+        tvTemp = findViewById(R.id.tvTemp);
         btnCity1 = findViewById(R.id.btnCity1);
         btnCity2 = findViewById(R.id.btnCity2);
         btnCity3 = findViewById(R.id.btnCity3);
         btnBack = findViewById(R.id.btnBack);
-        tvDetails = findViewById(R.id.txt_details);
+        tvDetails = findViewById(R.id.tvDetails);
 
         /**
          * Пока не знаю, как лучше вынести код с HashMap'ами в презентер.
